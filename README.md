@@ -282,6 +282,31 @@ O projeto inclui:
 
 ---
 
+---
+
+# Vídeo da Apresentação
+
+A apresentação completa do projeto está disponível no YouTube (modo **Não listado**) por meio do link abaixo:
+
+**https://youtu.be/LYgMUM_iMOk**
+
+Também é possível acessar essa informação na pasta:
+
+```text
+video/
+```
+
+O vídeo demonstra:
+
+- Motivação do problema;
+- Modelagem da Rede Bayesiana;
+- Formulação do algoritmo A*;
+- Integração entre os módulos;
+- Execução dos experimentos;
+- Comparação entre FIFO, Gulosa e A*;
+- Resultados e conclusões.
+
+
 # Observações
 
 Este projeto possui finalidade exclusivamente **acadêmica** e foi desenvolvido como trabalho final da disciplina de Inteligência Artificial.
