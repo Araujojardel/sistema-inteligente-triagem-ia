@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Sistema Inteligente de Triagem em Pronto-Socorro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. SETUP & DESIGN SYSTEM */
+        * { box-sizing: border-box; }
+        body { background-color: #cbd5e1; display: grid; gap: 40px; grid-template-columns: 1fr; margin: 0; padding: 40px 0; place-items: center; }
+
+        .slide-container {
+            align-items: center; background-color: #f3f0df; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            display: flex; flex-direction: column; font-family: "DM Sans", sans-serif; height: 720px; justify-content: center;
+            overflow: hidden; padding: 60px; position: relative; width: 1280px;
+        }
+
+        /* Top Bar Element consistent across presentation */
+        .slide-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 12px;
+            background-color: #005088; z-index: 10;
+        }
+
+        /* 2. TYPOGRAPHY */
+        h1, h2, h3 { color: #005088; font-family: "Merriweather", serif; margin: 0; }
+        .slide-container h1 { font-size: 54px; line-height: 1.2; text-align: center; font-weight: 700; }
+        .slide-container .slide-title { font-size: 38px; font-weight: 700; margin-bottom: 35px; text-align: left; width: 100%; border-bottom: 3px solid #11caa0; padding-bottom: 12px; }
+        .slide-container h3 { font-size: 26px; font-weight: 700; margin-bottom: 15px; color: #005088; }
+        .slide-container p, .slide-container li, .slide-container td, .slide-container th { font-size: 19px; line-height: 1.6; color: #334155; }
+        .slide-container .subtitle { font-size: 24px; color: #005088; margin-top: 15px; font-weight: 500; text-align: center; }
+
+        .content-area { display: flex; flex-direction: column; flex-grow: 1; justify-content: center; width: 100%; height: 100%; }
+
+        /* 3. LAYOUT TOOLS */
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; align-items: center; }
+        
+        .image-wrapper { border-radius: 8px; overflow: hidden; height: 380px; width: 100%; border: 1px solid #cbd5e1; background: #fff; display: flex; align-items: center; justify-content: center; }
+        .image-wrapper img { height: 100%; width: 100%; object-fit: contain; }
+
+        .tiled-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; }
+        .tile { background-color: #fff; border-radius: 10px; border-left: 6px solid #11caa0; padding: 25px; display: flex; flex-direction: column; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .tile .icon { font-size: 30px; color: #005088; margin-bottom: 10px; }
+
+        .highlight-numbers-layout .number { color: #11caa0; font-size: 130px; font-weight: 700; font-family: "Merriweather", serif; line-height: 1; }
+        .highlight-numbers-layout .number-label { font-size: 28px; font-weight: 700; color: #003366; }
+
+        .table-layout table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .table-layout th { background-color: #005088; color: white; padding: 18px; text-align: center; font-family: "Merriweather", serif; font-size: 18px; }
+        .table-layout td { padding: 15px; border: 1px solid #cbd5e1; text-align: center; font-size: 18px; }
+        .table-layout tr:nth-child(even) td { background: #f8fafc; }
+
+        .bullet-list ul { list-style: none; padding: 0; margin: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 15px; font-size: 19px; }
+        .bullet-list li::before { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; color: #11CAA0; font-size: 22px; }
+
+        .section-title-layout { text-align: center; }
+        .section-title-layout hr { border: none; height: 5px; width: 120px; background: #11CAA0; margin: 25px auto; }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container" id="slide1">
+        <div class="content-area" style="text-align: center; justify-content: center;">
+            <h1>Sistema Inteligente de Triagem em Pronto-Socorro</h1>
+            <p class="subtitle">Disciplina de Inteligência Artificial</p>
+            <p style="margin-top: 15px; font-size: 20px; color: #334155;">Professor: José Antonio Macedo</p>
+            <div style="margin-top: 60px; font-weight: 700; color: #005088; font-size: 22px;">
+                Francisco Wilton (508586) & Jardel de Araújo (574297)
+            </div>
+            <p style="margin-top: 10px; font-size: 16px; color: #64748b;">Universidade Federal do Ceará - 2026</p>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide2">
+        <h2 class="slide-title">1. Introdução e Motivação</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="bullet-list">
+                    <h3>O Problema no Pronto-Socorro</h3>
+                    <ul>
+                        <li>Superlotação e longos tempos de espera em unidades de saúde.</li>
+                        <li>Triagem manual sujeita a subjetividade e forte pressão operacional.</li>
+                        <li>Dificuldade no acompanhamento contínuo do risco de deterioração clínica.</li>
+                    </ul>
+                    <div style="margin-top: 25px; background: #fff; padding: 20px; border-radius: 8px; border-left: 5px solid #005088;">
+                        <p style="margin: 0; font-weight: 500;"><strong>Objetivo Geral:</strong> Implementar e avaliar um sistema inteligente capaz de estimar a gravidade dos pacientes e sugerir uma ordem de atendimento que reduza o risco acumulado da fila.</p>
+                    </div>
+                </div>
+                <div class="image-wrapper">
+                    <div style="text-align: center; color: #94a3b8; padding: 20px;">
+                        <i class="fa-solid fa-hospital-user" style="font-size: 80px; color: #005088; margin-bottom: 15px;"></i>
+                        <p style="color: #334155; font-weight: 500;">Paciente &rarr; Triagem &rarr; Espera &rarr; Atendimento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide3">
+        <h2 class="slide-title">2. Modelagem da Rede Bayesiana</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="image-wrapper" style="height: 450px;">
+                    <img src="rede_bayesiana.png" alt="Estrutura da Rede Bayesiana implementada">
+                </div>
+                <div>
+                    <h3>Estrutura e Dependências</h3>
+                    <p>O modelo gráfico probabilisticamente representa a incerteza clínica associada à triagem.</p>
+                    <div class="bullet-list">
+                        <ul>
+                            <li><strong>7 Variáveis de Entrada:</strong> Febre, Saturação, Pressão, Frequência, Dor, Idade e Doença Crônica.</li>
+                            <li><strong>Nó Central:</strong> Gravidade (Baixa, Média, Alta).</li>
+                            <li><strong>Nó de Saída:</strong> Risco de Deterioração (Baixo, Médio, Alto).</li>
+                        </ul>
+                    </div>
+                    <p style="font-size: 16px; color: #64748b; font-style: italic; margin-top: 15px;">Implementado via biblioteca <b>pgmpy</b> no ecossistema Python.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide4">
+        <h2 class="slide-title">2.1 Geração da CPT de Gravidade</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div>
+                    <h3>Função de Escore Clínico</h3>
+                    <p>Devido ao número de pais, a CPT foi populada mapeando combinatórias de estados para pesos heurísticos inspirados no Protocolo de Manchester.</p>
+                    <p>A probabilidade de gravidade alta aumenta conforme os marcadores clínicos se desviam do padrão normal.</p>
+                    <div style="margin-top: 20px; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                        <p style="margin: 0; font-family: monospace; font-size: 16px; color: #005088;">
+                            p_alta = 1 / (1 + exp(-(escore - 8) / 2))<br>
+                            p_baixa = 1 / (1 + exp((escore - 5) / 2))<br>
+                            p_media = max(0.01, 1 - p_alta - p_baixa)
+                        </p>
+                    </div>
+                </div>
+                <div class="image-wrapper" style="height: 420px;">
+                    <img src="pesos_cpt.png" alt="Pesos heurísticos usados na geração da CPT de Gravidade">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide5">
+        <h2 class="slide-title">2.2 Exemplo de Inferência (Variable Elimination)</h2>
+        <div class="content-area">
+            <div class="two-column highlight-numbers-layout">
+                <div style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; flex-direction: column; justify-content: center; height: 400px;">
+                    <img src="paciente_exemplo.png" alt="Paciente utilizado no exemplo de inferência" style="max-height: 100%; object-fit: contain;">
+                </div>
+                <div style="padding-left: 20px;">
+                    <h3>Resultados do Módulo Probabilístico</h3>
+                    <p>Inserindo o perfil crítico no algoritmo <code>VariableElimination</code> obtém-se:</p>
+                    <div class="bullet-list" style="margin-bottom: 25px;">
+                        <ul>
+                            <li>Probabilidade Gravidade Baixa: <b>0,41%</b></li>
+                            <li>Probabilidade Gravidade Média: <b>1,39%</b></li>
+                            <li>Probabilidade Gravidade Alta: <span style="color: #11caa0; font-weight: bold;">98,20%</span></li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; background: #e0f2fe; padding: 20px; border-radius: 8px;">
+                        <div class="number" style="font-size: 80px;">98.2%</div>
+                        <div class="number-label" style="font-size: 18px;">P(Gravidade = alta) repassada ao A*</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide6">
+        <h2 class="slide-title">3. Formulação do Problema de Busca</h2>
+        <div class="content-area">
+            <p style="margin-top: -15px; margin-bottom: 25px;">Modelagem do sequenciamento da fila de triagem como um grafo de estados clássico em IA.</p>
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>Estado</h3>
+                    <p>Conjunto ordenado de pacientes que já receberam atendimento na simulação (sequência inicial vazia).</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-square-caret-right"></i></div>
+                    <h3>Ação</h3>
+                    <p>Selecionar e retirar o próximo paciente da lista de espera para encaminhar ao atendimento.</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Custos e Avaliação</h3>
+                    <p><b>g(n):</b> Risco acumulado. Cada atendimento consome 10 min, incrementando a espera dos remanescentes.<br><b>Heurística h(n):</b> Soma dos riscos atuais dos restantes (admissível e otimista).</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3>Objetivo</h3>
+                    <p>Alcançar uma folha na árvore onde todos os pacientes foram alocados, minimizando o risco acumulado global.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide7">
+        <h2 class="slide-title">3.1 Espaço de Busca e Expansão</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="image-wrapper" style="height: 420px; padding: 10px;">
+                    <img src="expansao_estados_astar.png" alt="Expansão de estados no problema de ordenação da fila">
+                </div>
+                <div>
+                    <h3>Complexidade Combinatória</h3>
+                    <p>O espaço de estados cresce de forma fatorial ($n!$). Para 8 pacientes, são 40.320 permutações possíveis.</p>
+                    <div class="bullet-list">
+                        <ul>
+                            <li><b>Cenário Pequeno (8 pac.):</b> Execução do $A^*$ completo sem modificações. Garantia de otimalidade matemática.</li>
+                            <li><b>Cenário Médio (25 pac.):</b> Explosão combinatória impossibilita busca exaustiva. Aplicou-se versão aproximada com <b>limite de 30.000 expansões e poda</b> (feixe limitado aos 8 melhores candidatos).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide8">
+        <h2 class="slide-title">4. Integração dos Módulos</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="bullet-list">
+                    <h3>Arquitetura em Pipeline</h3>
+                    <ul>
+                        <li>A <b>Rede Bayesiana</b> processa a incerteza dos sinais clínicos subjetivos e gera a métrica estável de probabilidade.</li>
+                        <li>O <b>Algoritmo A*</b> absorve a probabilidade combinada ao tempo, gerenciando o comportamento dinâmico do custo sequencial.</li>
+                        <li><b>Sinergia:</b> Sem a inferência, a busca careceria de peso clínico. Sem a busca, a inferência seria apenas um dado estático e isolado.</li>
+                    </ul>
+                </div>
+                <div class="image-wrapper" style="height: 450px;">
+                    <img src="fluxo_integracao.png" alt="Fluxo completo do sistema inteligente de triagem">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide9">
+        <h2 class="slide-title">5. Experimentos: Cenário Pequeno (8 Pacientes)</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="image-wrapper" style="height: 400px;">
+                    <img src="comparacao_cenario_pequeno.png" alt="Comparação de Risco Total - Cenário Pequeno">
+                </div>
+                <div>
+                    <h3>Análise de Performance</h3>
+                    <p>A busca exaustiva do $A^*$ encontrou a sequência ótima global de atendimento.</p>
+                    <div class="table-layout">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estratégia</th>
+                                    <th>Risco Acumulado Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FIFO (Chegada)</td>
+                                    <td>394,25</td>
+                                </tr>
+                                <tr>
+                                    <td>Gulosa (Apenas Gravidade)</td>
+                                    <td>186,04</td>
+                                </tr>
+                                <tr style="background-color: #ecfdf5;">
+                                    <td><b>A* Completo</b></td>
+                                    <td style="color: #047857; font-weight: bold;">176,78</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 16px;">O $A^*$ superou a heurística Gulosa por balancear o agravamento dos pacientes de médio risco que aguardavam há muito tempo.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide10">
+        <h2 class="slide-title">5.1 Experimentos: Cenário Médio (25 Pacientes)</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div class="image-wrapper" style="height: 400px;">
+                    <img src="comparacao_cenario_medio.png" alt="Comparação de Risco Total - Cenário Médio">
+                </div>
+                <div>
+                    <h3>O Impacto da Poda</h3>
+                    <div class="table-layout" style="margin-bottom: 20px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Estratégia</th>
+                                    <th>Risco Acumulado Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>FIFO</td>
+                                    <td>11.784,04</td>
+                                </tr>
+                                <tr style="background-color: #ecfdf5;">
+                                    <td><b>Gulosa</b></td>
+                                    <td style="color: #047857; font-weight: bold;">4.389,76</td>
+                                </tr>
+                                <tr>
+                                    <td>A* Limitado (30k exp.)</td>
+                                    <td>5.006,92</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>Compromisso Computacional</h3>
+                    <p style="font-size: 17px; line-height: 1.5;">Como o espaço de busca foi severamente restrito para viabilizar a execução, a perda de otimalidade fez com que a Gulosa performasse melhor. O resultado demonstra o desafio prático de escalabilidade em árvores fatoriais.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide11">
+        <h2 class="slide-title">6. Conclusão e Trabalhos Futuros</h2>
+        <div class="content-area">
+            <div class="two-column">
+                <div style="background-color: #fff; padding: 25px; border-radius: 8px; border-top: 4px solid #11caa0; height: 100%;">
+                    <h3>O que funcionou</h3>
+                    <div class="bullet-list">
+                        <ul>
+                            <li>A integração robusta entre inferência e busca sequencial transformou dados de sintomas em decisões operacionais.</li>
+                            <li>Desempenho ideal no cenário reduzido, mitigando riscos em relação ao método tradicional.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div style="background-color: #fff; padding: 25px; border-radius: 8px; border-top: 4px solid #005088; height: 100%;">
+                    <h3>Limitações e Futuro</h3>
+                    <div class="bullet-list">
+                        <ul>
+                            <li><b>Limitação:</b> Escalabilidade do $A^*$ exato e dependência de CPTs estimadas heuristicamente.</li>
+                            <li><b>Evolução:</b> Investigar meta-heurísticas ou <i>Beam Search</i>, aplicar bases de dados hospitalares reais e prever a chegada dinâmica de novos pacientes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-container" id="slide12">
+        <h2 class="slide-title">Referências Bibliográficas</h2>
+        <div class="content-area" style="justify-content: flex-start;">
+            <p style="margin-bottom: 20px; font-size: 16px; line-height: 1.6; color: #475569;">
+                [1] MACKWAY-JONES, K.; MARSDEN, J.; WINDLE, J. <b>Emergency Triage: Manchester Triage Group</b>. 3. ed. Wiley-Blackwell, 2014.<br><br>
+                [2] PEARL, J. <b>Probabilistic Reasoning in Intelligent Systems: Networks of Plausible Inference</b>. Morgan Kaufmann, 1988.<br><br>
+                [3] RUSSELL, S.; NORVIG, P. <b>Artificial Intelligence: A Modern Approach</b>. 4. ed. Pearson, 2021.<br><br>
+                [4] KOLLER, D.; FRIEDMAN, N. <b>Probabilistic Graphical Models: Principles and Techniques</b>. MIT Press, 2009.<br><br>
+                [5] HART, P. E.; NILSSON, N. J.; RAPHAEL, B. A formal basis for the heuristic determination of minimum cost paths. <b>IEEE Transactions on Systems Science and Cybernetics</b>, v. 4, n. 2, p. 100-107, 1968.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
