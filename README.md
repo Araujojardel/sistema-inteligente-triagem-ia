@@ -205,10 +205,10 @@ sistema-inteligente-triagem-ia
 │   └── expansao_estados_astar.png
 │
 ├── relatorio
-│   └── Relatorio_Final_IA.pdf
+│   └── Relatório Final IA - Francisco Wilton e Jardel Araújo.pdf
 │
 └── docs
-    └── Trabalho_Final_IA.pdf
+    └── Trabalho_Final_IA - Google Docs.pdf
 ```
 
 ---
