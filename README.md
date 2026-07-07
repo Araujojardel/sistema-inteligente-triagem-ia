@@ -1,8 +1,8 @@
 # Sistema Inteligente de Triagem em Pronto-Socorro
 
-Projeto Final da disciplina de **Inteligência Artificial**.
+Projeto Final da disciplina de **Inteligência Artificial** desenvolvido na **Universidade Federal do Ceará (UFC)**.
 
-Este projeto propõe um sistema inteligente para apoio à triagem em pronto-socorro utilizando **Redes Bayesianas** para inferência probabilística da gravidade clínica e o **algoritmo A\*** para otimizar a ordem de atendimento dos pacientes.
+O projeto propõe um sistema inteligente de apoio à decisão para triagem em pronto-socorros, integrando uma **Rede Bayesiana** para inferência probabilística da gravidade clínica e o **algoritmo A*** para otimização da ordem de atendimento dos pacientes.
 
 ---
 
@@ -19,18 +19,18 @@ Este projeto propõe um sistema inteligente para apoio à triagem em pronto-soco
 
 ---
 
-# Objetivo
+# Objetivo do Projeto
 
-O objetivo deste trabalho é desenvolver um sistema inteligente capaz de:
+Desenvolver um sistema inteligente capaz de:
 
 - Estimar a gravidade clínica de pacientes a partir de sintomas e sinais vitais utilizando uma **Rede Bayesiana**;
 - Calcular o risco de deterioração clínica durante o tempo de espera;
-- Determinar uma ordem ótima de atendimento utilizando o algoritmo **A\***;
-- Comparar o desempenho da solução proposta com as estratégias **FIFO** e **Gulosa**.
+- Determinar automaticamente uma ordem de atendimento utilizando o algoritmo **A***;
+- Comparar o desempenho da solução proposta com estratégias tradicionais de atendimento (**FIFO** e **Gulosa**).
 
 ---
 
-# Tecnologias utilizadas
+# Tecnologias Utilizadas
 
 - Python 3
 - Google Colab
@@ -45,77 +45,80 @@ O objetivo deste trabalho é desenvolver um sistema inteligente capaz de:
 
 # Arquitetura do Sistema
 
-O sistema é composto por dois módulos integrados.
+O sistema foi dividido em dois módulos principais:
 
-1. Inferência probabilística por Rede Bayesiana;
-2. Otimização da fila utilizando o algoritmo A*.
+1. **Rede Bayesiana**
+   - Inferência probabilística da gravidade clínica.
+
+2. **Algoritmo A***
+   - Otimização da ordem de atendimento considerando gravidade e tempo de espera.
 
 <p align="center">
-<img src="imagens/fluxo_integracao.png" width="500">
+<img src="imagens/fluxo_integracao.png" width="650">
 </p>
 
 ---
 
-# Rede Bayesiana
+# Modelagem da Rede Bayesiana
 
-A Rede Bayesiana representa as relações probabilísticas entre os sinais clínicos observados e a variável central **Gravidade**.
-
-Variáveis utilizadas:
-
-- Febre
-- Saturação de Oxigênio
-- Pressão Arterial
-- Frequência Cardíaca
-- Dor
-- Idade
-- Doença Crônica
-- Gravidade
-- Risco de Deterioração
+A Rede Bayesiana representa as relações probabilísticas entre os sinais clínicos observados e a variável central **Gravidade**, permitindo inferência mesmo diante de informações incompletas.
 
 <p align="center">
 <img src="imagens/rede_bayesiana.png" width="750">
 </p>
 
----
+### Variáveis utilizadas
 
-# Algoritmo A*
+| Variável | Estados |
+|----------|----------|
+| Febre | Sim / Não |
+| Saturação de Oxigênio | Normal / Reduzida / Crítica |
+| Pressão Arterial | Normal / Baixa |
+| Frequência Cardíaca | Normal / Elevada |
+| Dor | Leve / Moderada / Intensa |
+| Idade | Jovem / Adulto / Idoso |
+| Doença Crônica | Sim / Não |
+| Gravidade | Baixa / Média / Alta |
+| Risco de Deterioração | Baixo / Médio / Alto |
 
-O problema foi formulado como um problema clássico de busca.
-
-## Estado
-
-Pacientes já atendidos.
-
-## Estado inicial
-
-Nenhum paciente atendido.
-
-## Objetivo
-
-Todos os pacientes atendidos.
-
-## Ações
-
-Escolher o próximo paciente da fila.
-
-## Custo
-
-Risco acumulado dos pacientes que permanecem aguardando atendimento.
-
-## Heurística
-
-Soma dos riscos atuais dos pacientes ainda presentes na fila.
+A inferência foi implementada utilizando o algoritmo **Variable Elimination**, disponível na biblioteca **pgmpy**.
 
 ---
 
-# Integração dos módulos
+# Formulação do Algoritmo A*
 
-A integração ocorre da seguinte maneira:
+O problema foi modelado como um problema clássico de busca.
 
-```
+| Elemento | Descrição |
+|----------|-----------|
+| Estado | Sequência parcial de pacientes já atendidos |
+| Estado Inicial | Nenhum paciente atendido |
+| Objetivo | Atender todos os pacientes minimizando o risco acumulado |
+| Ação | Escolher o próximo paciente da fila |
+| Custo | Soma do risco acumulado dos pacientes que permanecem aguardando atendimento |
+| Heurística | Soma dos riscos atuais dos pacientes restantes |
+
+A função de avaliação segue a formulação clássica:
+
+\[
+f(n)=g(n)+h(n)
+\]
+
+onde:
+
+- **g(n)** representa o risco acumulado;
+- **h(n)** estima o risco restante.
+
+---
+
+# Integração entre os Módulos
+
+O fluxo completo do sistema ocorre da seguinte forma:
+
+```text
 Paciente
       ↓
-Coleta de sintomas
+Coleta de sintomas e sinais vitais
       ↓
 Rede Bayesiana
       ↓
@@ -128,71 +131,79 @@ Algoritmo A*
 Ordem ótima de atendimento
 ```
 
-A probabilidade de **Gravidade Alta** produzida pela Rede Bayesiana é utilizada diretamente pelo algoritmo A* para calcular o risco acumulado de cada paciente.
+A Rede Bayesiana produz a probabilidade de **Gravidade Alta**, utilizada diretamente pelo algoritmo **A*** para calcular o risco de deterioração clínica e priorizar os pacientes.
 
 ---
 
 # Experimentos
 
-Foram avaliadas três estratégias de atendimento:
+Foram comparadas três estratégias de atendimento.
 
 | Estratégia | Descrição |
 |------------|-----------|
-| FIFO | Ordem de chegada |
-| Gulosa | Maior probabilidade de gravidade |
-| A* | Gravidade + tempo de espera |
+| FIFO | Atendimento por ordem de chegada |
+| Gulosa | Prioriza pacientes com maior probabilidade de gravidade |
+| A* | Considera simultaneamente gravidade e tempo de espera |
 
 Foram simulados dois cenários:
 
-- Cenário pequeno (8 pacientes)
-- Cenário médio (25 pacientes)
+- **Cenário Pequeno:** 8 pacientes
+- **Cenário Médio:** 25 pacientes
+
+---
+
+# Resultados dos Experimentos
+
+| Cenário | FIFO | Gulosa | A* |
+|---------|------:|--------:|---:|
+| Pequeno (8 pacientes) | 394.25 | 186.04 | **176.78** |
+| Médio (25 pacientes) | 11784.04 | **4389.76** | 5006.92* |
+
+> **Observação:** No cenário médio foi utilizada uma versão limitada do algoritmo A*, restringindo o número máximo de expansões da árvore de busca. Essa adaptação reduz significativamente o custo computacional, porém elimina a garantia de encontrar a solução ótima.
 
 ---
 
 ## Cenário Pequeno
 
 <p align="center">
-<img src="imagens/comparacao_cenario_pequeno.png" width="600">
+<img src="imagens/comparacao_cenario_pequeno.png" width="700">
 </p>
 
-Resultados:
-
-| Estratégia | Risco acumulado |
-|------------|----------------:|
-| FIFO | 394.25 |
-| Gulosa | 186.04 |
-| A* | **176.78** |
+No cenário pequeno, o algoritmo **A*** completo apresentou o menor risco acumulado, confirmando sua capacidade de encontrar a solução ótima.
 
 ---
 
 ## Cenário Médio
 
 <p align="center">
-<img src="imagens/comparacao_cenario_medio.png" width="600">
+<img src="imagens/comparacao_cenario_medio.png" width="700">
 </p>
 
-Resultados:
+No cenário médio, devido ao crescimento fatorial do espaço de busca, foi utilizada uma versão aproximada do algoritmo A*. A estratégia Gulosa apresentou menor risco acumulado, evidenciando a perda de otimalidade causada pela limitação da busca.
 
-| Estratégia | Risco acumulado |
-|------------|----------------:|
-| FIFO | 11784.04 |
-| Gulosa | **4389.76** |
-| A* limitado | 5006.92 |
+---
 
-Neste cenário foi utilizada uma versão limitada do algoritmo A*, sem garantia de otimalidade, devido ao crescimento fatorial do espaço de busca.
+# Principais Resultados
+
+- Implementação de uma Rede Bayesiana composta por sete variáveis clínicas.
+- Inferência probabilística utilizando **Variable Elimination**.
+- Integração completa entre Rede Bayesiana e algoritmo **A***.
+- Comparação entre estratégias FIFO, Gulosa e A*.
+- Melhor desempenho do algoritmo **A*** no cenário pequeno.
+- Discussão das limitações computacionais do A* em cenários maiores.
 
 ---
 
 # Estrutura do Projeto
 
-```
-sistema-inteligente-triagem-ia
+```text
+sistema-inteligente-triagem-ia/
 │
 ├── README.md
 ├── requirements.txt
 ├── Sistema_Inteligente_Triagem_Pronto_Socorro.ipynb
 │
-├── imagens
+├── imagens/
 │   ├── rede_bayesiana.png
 │   ├── fluxo_integracao.png
 │   ├── comparacao_cenario_pequeno.png
@@ -204,16 +215,16 @@ sistema-inteligente-triagem-ia
 │   ├── pseudocodigo_astar.png
 │   └── expansao_estados_astar.png
 │
-├── relatorio
-│   └── Relatório Final IA - Francisco Wilton e Jardel Araújo.pdf
+├── relatorio/
+│   └── Relatorio_Final_IA.pdf
 │
-└── docs
-    └── Trabalho_Final_IA - Google Docs.pdf
+└── docs/
+    └── Trabalho_Final_IA.pdf
 ```
 
 ---
 
-# Como executar
+# Como Executar
 
 ## 1. Clone o repositório
 
@@ -229,37 +240,45 @@ pip install -r requirements.txt
 
 ## 3. Abra o notebook
 
-```
+Abra o arquivo:
+
+```text
 Sistema_Inteligente_Triagem_Pronto_Socorro.ipynb
 ```
 
+no **Google Colab** ou **Jupyter Notebook**.
+
+## 4. Execute o projeto
+
 Execute todas as células em sequência.
+
+Ao final serão gerados automaticamente:
+
+- Estrutura da Rede Bayesiana;
+- Inferências probabilísticas;
+- Simulação dos pacientes;
+- Comparação entre FIFO, Gulosa e A*;
+- Gráficos dos experimentos.
 
 ---
 
 # Referências
 
-- Pearl, J. *Probabilistic Reasoning in Intelligent Systems*. Morgan Kaufmann, 1988.
-- Russell, S.; Norvig, P. *Artificial Intelligence: A Modern Approach*. 4ª edição.
-- Hart, Nilsson e Raphael. *A Formal Basis for the Heuristic Determination of Minimum Cost Paths*. 1968.
-- Koller, D.; Friedman, N. *Probabilistic Graphical Models*. MIT Press, 2009.
-- Manchester Triage Group. *Emergency Triage*. Wiley-Blackwell, 2014.
+- PEARL, J. *Probabilistic Reasoning in Intelligent Systems*. Morgan Kaufmann, 1988.
+- RUSSELL, S.; NORVIG, P. *Artificial Intelligence: A Modern Approach*. 4ª ed. Pearson, 2021.
+- HART, P.; NILSSON, N.; RAPHAEL, B. *A Formal Basis for the Heuristic Determination of Minimum Cost Paths*. IEEE Transactions on Systems Science and Cybernetics, 1968.
+- KOLLER, D.; FRIEDMAN, N. *Probabilistic Graphical Models: Principles and Techniques*. MIT Press, 2009.
+- MANCHESTER TRIAGE GROUP. *Emergency Triage*. Wiley-Blackwell, 2014.
 
 ---
 
 # Documentação
 
-O relatório técnico completo encontra-se na pasta:
+O projeto inclui:
 
-```
-relatorio/
-```
-
-As orientações utilizadas para o desenvolvimento estão na pasta:
-
-```
-docs/
-```
+- Relatório técnico completo (`relatorio/`);
+- Documento com as orientações da atividade (`docs/`);
+- Notebook contendo toda a implementação (`Sistema_Inteligente_Triagem_Pronto_Socorro.ipynb`).
 
 ---
 
@@ -267,6 +286,10 @@ docs/
 
 Este projeto possui finalidade exclusivamente **acadêmica** e foi desenvolvido como trabalho final da disciplina de Inteligência Artificial.
 
-As probabilidades utilizadas nas Tabelas de Probabilidade Condicional (CPTs) foram definidas por modelagem heurística baseada na literatura e na lógica do Protocolo de Manchester, não devendo ser interpretadas como valores calibrados para utilização clínica.
+As Tabelas de Probabilidade Condicional (CPTs) foram definidas por modelagem heurística inspirada na literatura e na lógica do **Protocolo de Manchester**, não representando um sistema validado para utilização clínica.
 
 ---
+
+# Agradecimentos
+
+Agradecemos ao professor **José Antonio Macedo** pela orientação durante a disciplina e pelos conhecimentos compartilhados ao longo do desenvolvimento deste projeto.
